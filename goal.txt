@@ -1,10 +1,10 @@
 COOLDOWN
 
-inventory
-store
+inventory -
+store -
 adventure
 chop
 fishing
 rewards
-profiling
+profiling -
 increase max health as per level up

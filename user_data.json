@@ -1,0 +1,23 @@
+{
+    "a": {
+        "password": "a",
+        "coin": 1000013,
+        "xp": 462,
+        "health": 95,
+        "total_health": 100,
+        "attack": 10,
+        "defense": 5,
+        "inventory": {
+            "Rusty Dagger": 9,
+            "Life Potion": 9,
+            "Small Gem": 10,
+            "Torn Pouch": 11,
+            "Wolf Fang": 11,
+            "Cracked Fang": 2,
+            "Tattered Hide": 6,
+            "Magic Core": 2,
+            "Heavy Rock": 1
+        },
+        "username": "a"
+    }
+}
