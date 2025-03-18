@@ -1,5 +1,5 @@
 from user import load_user_data, save_user_data, register, login, delete_user
-from combat import rpg_hunt ,rpg_adventure,rpg_chop
+from combat import rpg_hunt ,rpg_adventure,rpg_chop,reward
 from inventory import view_inventory
 from profile import view_profile
 from store import store
@@ -27,13 +27,14 @@ def start_game():
         print("\nMenu:")
         print(f"1. {item_emojis['Hunt']} Hunt")
         print(f"2. {item_emojis['Adventure']} Adventure")
-        print(f"3. {item_emojis['Chop_woods']} Chop Wood")
+        print(f"3. {item_emojis['Heal using Life Potion']} Heal using Life Potion")
         print(f"4. {item_emojis['View Inventory']} View Inventory")
         print(f"5. {item_emojis['View Profile']} View Profile")
         print(f"6. {item_emojis['Store']} Store")
-        print(f"7. {item_emojis['Heal using Life Potion']} Heal using Life Potion")
-        print(f"8. {item_emojis['Delete User']} Delete User")
-        print(f"9. {item_emojis['Exit']} Exit")
+        print(f"7. {item_emojis['Chop_woods']} Chop Wood")
+        print(f"8. {item_emojis['Reward']} Reward")
+        print(f"9. {item_emojis['Delete User']} Delete User")
+        print(f"10. {item_emojis['Exit']} Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -52,8 +53,15 @@ def start_game():
             else:
                 print("You don't have enough health for an adventure.")
         elif choice == '3':
-            rpg_chop(current_user)
-            save_user_data(users)
+            if current_user['health'] == current_user['total_health']:
+                print("You already have full health. You cannot use the Life Potion.")
+            elif 'Life Potion' in current_user['inventory'] and current_user['inventory']['Life Potion'] > 0:
+                current_user['health'] = current_user['total_health']
+                current_user['inventory']['Life Potion'] -= 1
+                print("You have been healed to full health.")
+                save_user_data(users)
+            else:
+                print("You don't have any Life Potions.")
         elif choice == '4':
             view_inventory(current_user)
         elif choice == '5':
@@ -62,17 +70,15 @@ def start_game():
             store(current_user)
             save_user_data(users)
         elif choice == '7':
-            if 'Life Potion' in current_user['inventory'] and current_user['inventory']['Life Potion'] > 0:
-                current_user['health'] = current_user['total_health']
-                current_user['inventory']['Life Potion'] -= 1
-                print("You have been healed to full health.")
-                save_user_data(users)
-            else:
-                print("You don't have any Life Potions.")
+            rpg_chop(current_user)
+            save_user_data(users)
         elif choice == '8':
+            reward(current_user)
+            save_user_data(users)
+        elif choice == '9':
             delete_user(user)
             break
-        elif choice == '9':
+        elif choice == '10':
             print("Exiting the game.")
             save_user_data(users)
             break

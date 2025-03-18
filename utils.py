@@ -50,5 +50,6 @@ item_emojis = {
     "Delete User": "❌",
     "Exit": "🚪",
     # "Wood": "🪵",
-    "Chop_woods" : "🪓"
+    "Chop_woods" : "🪓",
+    "Reward": "🏆"
 }

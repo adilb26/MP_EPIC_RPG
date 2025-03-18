@@ -96,3 +96,23 @@ def rpg_chop(user):
     print("--------------------------------------------------")
     
     save_user_data(user)
+
+
+def reward(user):
+    coins_reward = random.randint(100, 600)
+    life_potion_reward = random.randint(2, 20)
+        
+    user['coin'] += coins_reward
+    if 'Life Potion' in user['inventory']:
+        user['inventory']['Life Potion'] += life_potion_reward
+    else:
+        user['inventory']['Life Potion'] = life_potion_reward
+        
+    print("\n")
+    print("--------------------------------------------------")
+    print(f"🎁 You received a reward!")
+    print(f"💰 Coins: {coins_reward}")
+    print(f"🧪 Life Potions: {life_potion_reward}")
+    print("--------------------------------------------------")
+        
+    save_user_data(user)
