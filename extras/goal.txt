@@ -2,8 +2,8 @@ COOLDOWN
 
 inventory -
 store -
-adventure
-chop
+adventure -
+chop - 
 fishing
 rewards
 profiling -
