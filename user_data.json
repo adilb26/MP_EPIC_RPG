@@ -1,9 +1,9 @@
 {
     "a": {
         "password": "a",
-        "coin": 1000013,
-        "xp": 462,
-        "health": 95,
+        "coin": 1000083,
+        "xp": 604,
+        "health": 62,
         "total_health": 100,
         "attack": 10,
         "defense": 5,
@@ -15,8 +15,9 @@
             "Wolf Fang": 11,
             "Cracked Fang": 2,
             "Tattered Hide": 6,
-            "Magic Core": 2,
-            "Heavy Rock": 1
+            "Magic Core": 5,
+            "Heavy Rock": 3,
+            "Cracked Stone": 2
         },
         "username": "a"
     }
