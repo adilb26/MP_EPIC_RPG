@@ -1,9 +1,10 @@
+import time
 from user import load_user_data, save_user_data, register, login, delete_user
-from combat import rpg_hunt ,rpg_adventure,rpg_chop,reward
+from combat import rpg_hunt, rpg_adventure, rpg_chop, reward
 from inventory import view_inventory
 from profile import view_profile
 from store import store
-from utils import get_level ,item_emojis
+from utils import get_level, item_emojis
 
 def start_game():
     user = None
@@ -23,6 +24,11 @@ def start_game():
     current_user = users[user]
     current_user['username'] = user
 
+    last_hunt_time = 0
+    last_adventure_time = 0
+    last_chop_time = 0
+    last_reward_time = 0
+
     while True:
         print("\nMenu:")
         print(f"1. {item_emojis['Hunt']} Hunt")
@@ -37,21 +43,31 @@ def start_game():
         print(f"10. {item_emojis['Exit']} Exit")
         choice = input("Enter your choice: ")
 
+        current_time = time.time()
+
         if choice == '1':
-            level = get_level(current_user['xp'])
-            if current_user['health'] > 0:
-                rpg_hunt(level, current_user)
-                if current_user['health'] <= 0:
-                    print("You have no health left. Game over.")
-                    break
-                save_user_data(users)
-        elif choice == '2':
-            level = get_level(current_user['xp'])
-            if current_user['health'] > 0:
-                rpg_adventure(level, current_user)
-                save_user_data(users)
+            if current_time - last_hunt_time >= 10:
+                level = get_level(current_user['xp'])
+                if current_user['health'] > 0:
+                    rpg_hunt(level, current_user)
+                    if current_user['health'] <= 0:
+                        print("You have no health left. Game over.")
+                        break
+                    save_user_data(users)
+                    last_hunt_time = current_time
             else:
-                print("You don't have enough health for an adventure.")
+                print("Hunt is on cooldown. Please wait a few seconds.")
+        elif choice == '2':
+            if current_time - last_adventure_time >= 30:
+                level = get_level(current_user['xp'])
+                if current_user['health'] > 0:
+                    rpg_adventure(level, current_user)
+                    save_user_data(users)
+                    last_adventure_time = current_time
+                else:
+                    print("You don't have enough health for an adventure.")
+            else:
+                print("Adventure is on cooldown. Please wait a few seconds.")
         elif choice == '3':
             if current_user['health'] == current_user['total_health']:
                 print("You already have full health. You cannot use the Life Potion.")
@@ -70,11 +86,19 @@ def start_game():
             store(current_user)
             save_user_data(users)
         elif choice == '7':
-            rpg_chop(current_user)
-            save_user_data(users)
+            if current_time - last_chop_time >= 20:
+                rpg_chop(current_user)
+                save_user_data(users)
+                last_chop_time = current_time
+            else:
+                print("Chop Wood is on cooldown. Please wait a few seconds.")
         elif choice == '8':
-            reward(current_user)
-            save_user_data(users)
+            if current_time - last_reward_time >= 20:
+                reward(current_user)
+                save_user_data(users)
+                last_reward_time = current_time
+            else:
+                print("Reward is on cooldown. Please wait a few seconds.")
         elif choice == '9':
             delete_user(user)
             break

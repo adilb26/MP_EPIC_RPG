@@ -1,26 +1,16 @@
 {
     "a": {
         "password": "a",
-        "coin": 818,
-        "xp": 447,
-        "health": 100,
+        "coin": 14,
+        "xp": 27,
+        "health": 95,
         "total_health": 100,
         "attack": 10,
         "defense": 5,
         "inventory": {
-            "Small Gem": 9,
-            "Torn Pouch": 7,
-            "Rusty Dagger": 10,
-            "Tattered Hide": 6,
-            "Wolf Fang": 8,
-            "Cracked Fang": 6,
-            "Magic Core": 1,
-            "Cracked Stone": 1,
-            "Life Potion": 14,
-            "\ud83e\udeb5 :-Birch Log": 5,
-            "\ud83e\udeb5 :-Oak Log": 3,
-            "\ud83e\udeb5 :-Maple Log": 7,
-            "\ud83e\udeb5 :-Pine Log": 2
+            "Rusty Dagger": 2,
+            "Torn Pouch": 1,
+            "Small Gem": 1
         },
         "username": "a"
     }
