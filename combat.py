@@ -21,7 +21,7 @@ def rpg_hunt(level, user):
 
     user['coin'] += coins
     user['xp'] += xp_gain
-    user['health'] -= hp_loss  # ✅ Decrease only current health
+    user['health'] -= hp_loss
     if item in user['inventory']:
         user['inventory'][item] += 1
     else:
@@ -34,22 +34,21 @@ def rpg_hunt(level, user):
     print(f"💰 Earned {coins} coins.")
     print(f"📦 Found: {item_emojis[item]} {item}")
     
-    # Check if health is 0 and allow using Life Potion
     if user['health'] <= 0:
         if user['inventory'].get("Life Potion", 0) > 0:
             print("🩸 You are critically wounded! Do you want to use a Life Potion to restore your health? (yes/no)")
             choice = input("➡️ ").strip().lower()
 
             if choice == "yes":
-                user['health'] = user['total_health']  # Restore to max health
-                user['inventory']['Life Potion'] -= 1  # Reduce potion count
+                user['health'] = user['total_health']
+                user['inventory']['Life Potion'] -= 1
                 print("✨ You used a Life Potion and fully restored your health!")
             else:
                 print("💀 You have been defeated and lost all your XP.")
-                user['xp'] = 0  # Reset XP on defeat
+                user['xp'] = 0
         else:
             print("💀 You have been defeated and lost all your XP.")
-            user['xp'] = 0  # Reset XP on defeat
+            user['xp'] = 0
 
     print(f"❤️ Health: {user['health']}/{user['total_health']}")
     print("--------------------------------------------------")
@@ -66,12 +65,12 @@ def rpg_adventure(level, user):
     print("--------------------------------------------------")
     print(f"You encountered {creature['emoji']} {creature['name']}! Prepare for battle!")
     
-    user_damage = random.randint(20, 40)  # High HP loss
+    user_damage = random.randint(20, 40)
     user["health"] -= user_damage
     
     if user["health"] <= 0:
         print("You were defeated in the adventure! You barely escape with your life.")
-        user["health"] = 10  # Set a minimum health to avoid 0 HP
+        user["health"] = 10
     else:
         print(f"You survived and defeated {creature['emoji']} {creature['name']}!")
         user["coin"] += creature["reward"]
@@ -96,7 +95,6 @@ def rpg_chop(user):
     print("--------------------------------------------------")
     
     save_user_data(user)
-
 
 def reward(user):
     coins_reward = random.randint(100, 600)
