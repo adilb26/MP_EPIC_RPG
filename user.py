@@ -8,6 +8,8 @@ def load_user_data():
             return json.load(file)
     except FileNotFoundError:
         return {}
+    users = load_user_data()
+    
 
 def save_user_data(data):
     with open(user_data_file, 'w') as file:
@@ -24,6 +26,7 @@ def register():
         'password': password,
         'coin': 0,
         'xp': 0,
+        'level': 1,
         'health': 100,
         'total_health': 100,
         'attack': 10,

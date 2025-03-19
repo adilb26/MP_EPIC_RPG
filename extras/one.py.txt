@@ -1,0 +1,464 @@
+this is combat.py
+
+import random
+from user import save_user_data
+from utils import item_emojis
+
+def rpg_hunt(level, user):
+    events = [
+        {"creature": "Goblin", "coins": (1, 5), "xp": (5, 10), "hp_loss": (1, 2), "items": ["Rusty Dagger", "Torn Pouch", "Small Gem"]},
+        {"creature": "Wolf", "coins": (3, 6), "xp": (8, 12), "hp_loss": (2, 3), "items": ["Wolf Fang", "Tattered Hide", "Cracked Fang"]},
+        {"creature": "Bear", "coins": (5, 10), "xp": (15, 20), "hp_loss": (3, 4), "items": ["Bear Claw", "Fur Pelt", "Sharp Tooth"]},
+        {"creature": "Golem", "coins": (7, 12), "xp": (18, 22), "hp_loss": (4, 5), "items": ["Cracked Stone", "Magic Core", "Heavy Rock"]},
+        {"creature": "Slime", "coins": (10, 15), "xp": (25, 30), "hp_loss": (5, 6), "items": ["Slime Gel", "Sticky Residue", "Glowing Core"]},
+        {"creature": "Spider", "coins": (12, 18), "xp": (28, 33), "hp_loss": (6, 7), "items": ["Spider Leg", "Silk Thread", "Venom Sac"]},
+        {"creature": "Reptile", "coins": (15, 20), "xp": (35, 40), "hp_loss": (7, 8), "items": ["Reptile Scale", "Sharp Claw", "Venom Gland"]},
+        {"creature": "Deer", "coins": (17, 22), "xp": (38, 44), "hp_loss": (8, 9), "items": ["Deer Antler", "Soft Fur", "Hoof"]},
+        {"creature": "Frog", "coins": (20, 25), "xp": (45, 50), "hp_loss": (9, 10), "items": ["Frog Leg", "Slippery Skin", "Croak Sac"]},
+        {"creature": "Creeper", "coins": (23, 28), "xp": (50, 55), "hp_loss": (10, 11), "items": ["Creeper Dust", "Explosive Core", "Fragmented Shell"]},
+    ]
+    
+    if level < 1 or level > len(events):
+        print("Invalid level. Please choose a valid level.")
+        return
+    
+    event = events[level - 1]
+    coins = random.randint(*event["coins"])
+    xp_gain = random.randint(*event["xp"])
+    hp_loss = random.randint(*event["hp_loss"])
+    item = random.choice(event["items"])
+
+    user['coin'] += coins
+    user['xp'] += xp_gain
+    user['health'] -= hp_loss
+    if item in user['inventory']:
+        user['inventory'][item] += 1
+    else:
+        user['inventory'][item] = 1
+    print("\n")
+    print("--------------------------------------------------")
+    print(f"⚔️ Encountered a {event['creature']}!")
+    print(f"💔 Lost {hp_loss} health.")
+    print(f"⭐ Gained {xp_gain} XP.")
+    print(f"💰 Earned {coins} coins.")
+    print(f"📦 Found: {item_emojis[item]} {item}")
+    
+    if user['health'] <= 0:
+        if user['inventory'].get("Life Potion", 0) > 0:
+            print("🩸 You are critically wounded! Do you want to use a Life Potion to restore your health? (yes/no)")
+            choice = input("➡️ ").strip().lower()
+
+            if choice == "yes":
+                user['health'] = user['total_health']
+                user['inventory']['Life Potion'] -= 1
+                print("✨ You used a Life Potion and fully restored your health!")
+            else:
+                print("💀 You have been defeated and lost all your XP.")
+                user['xp'] = 0
+        else:
+            print("💀 You have been defeated and lost all your XP.")
+            user['xp'] = 0
+
+    print(f"❤️ Health: {user['health']}/{user['total_health']}")
+    print("--------------------------------------------------")
+
+def rpg_adventure(level, user):
+    adventure_creatures = [
+        {"name": "Ancient Dragon", "hp": 250, "attack": 30, "reward": 100, "xp": 75, "emoji": "🐉"},
+        {"name": "Dark Titan", "hp": 300, "attack": 35, "reward": 150, "xp": 100, "emoji": "🗿"},
+        {"name": "Demonic Hydra", "hp": 400, "attack": 45, "reward": 200, "xp": 150, "emoji": "🐍"}
+    ]
+    
+    creature = random.choice(adventure_creatures)
+    print("\n")
+    print("--------------------------------------------------")
+    print(f"You encountered {creature['emoji']} {creature['name']}! Prepare for battle!")
+    
+    user_damage = random.randint(20, 40)
+    user["health"] -= user_damage
+    
+    if user["health"] <= 0:
+        print("You were defeated in the adventure! You barely escape with your life.")
+        user["health"] = 10
+    else:
+        print(f"You survived and defeated {creature['emoji']} {creature['name']}!")
+        user["coin"] += creature["reward"]
+        user["xp"] += creature["xp"]
+        print(f"You earned {creature['reward']} coins and {creature['xp']} XP!")
+
+def rpg_chop(user):
+    Wood = ["🪵 Oak Log", "🪵 Pine Log", "🪵 Birch Log", "🪵 Maple Log"]
+    Wood_Choice = random.choice(Wood)
+    
+    if Wood_Choice in user['inventory']:
+        user['inventory'][Wood_Choice] += 1
+    else:
+        user['inventory'][Wood_Choice] = 1
+    
+    print("\n")
+    print("--------------------------------------------------")
+    print(f"🪓 You chopped down a tree and obtained: {Wood_Choice}")
+    print("--------------------------------------------------")
+    
+    save_user_data(user)
+
+def reward(user):
+    coins_reward = random.randint(100, 600)
+    life_potion_reward = random.randint(2, 20)
+        
+    user['coin'] += coins_reward
+    if 'Life Potion' in user['inventory']:
+        user['inventory']['Life Potion'] += life_potion_reward
+    else:
+        user['inventory']['Life Potion'] = life_potion_reward
+        
+    print("\n")
+    print("--------------------------------------------------")
+    print(f"🎁 You received a reward!")
+    print(f"💰 Coins: {coins_reward}")
+    print(f"🧪 Life Potions: {life_potion_reward}")
+    print("--------------------------------------------------")
+        
+    save_user_data(user)
+
+
+
+this is game.py 
+
+
+import time
+from user import load_user_data, save_user_data, register, login, delete_user
+from combat import rpg_hunt, rpg_adventure, rpg_chop, reward
+from inventory import view_inventory
+from profile import view_profile
+from store import store
+from utils import get_level, item_emojis
+
+def start_game():
+    user = None
+    while user is None:
+        print("\nMenu:")
+        print("1. Register")
+        print("2. Login")
+        choice = input("Enter your choice: ")
+        if choice == '1':
+            user = register()
+        elif choice == '2':
+            user = login()
+        else:
+            print("Invalid choice. Please enter 1 or 2.")
+
+    users = load_user_data()
+    current_user = users[user]
+    current_user['username'] = user
+
+    last_hunt_time = 0
+    last_adventure_time = 0
+    last_chop_time = 0
+    last_reward_time = 0
+
+    while True:
+        print("\nMenu:")
+        print(f"1. {item_emojis['Hunt']} Hunt")
+        print(f"2. {item_emojis['Adventure']} Adventure")
+        print(f"3. {item_emojis['Heal using Life Potion']} Heal using Life Potion")
+        print(f"4. {item_emojis['View Inventory']} View Inventory")
+        print(f"5. {item_emojis['View Profile']} View Profile")
+        print(f"6. {item_emojis['Store']} Store")
+        print(f"7. {item_emojis['Chop_woods']} Chop Wood")
+        print(f"8. {item_emojis['Reward']} Reward")
+        print(f"9. {item_emojis['Delete User']} Delete User")
+        print(f"10. {item_emojis['Exit']} Exit")
+        choice = input("Enter your choice: ")
+
+        current_time = time.time()
+
+        if choice == '1':
+            # if current_time - last_hunt_time >= 10:
+            level = get_level(current_user['xp'])
+            if current_user['health'] > 0:
+                rpg_hunt(level, current_user)
+                if current_user['health'] <= 0:
+                    print("You have no health left. Game over.")
+                    break
+                save_user_data(users)
+                last_hunt_time = current_time
+            # else:
+            #     print("Hunt is on cooldown. Please wait a few seconds.")
+        elif choice == '2':
+            # if current_time - last_adventure_time >= 30:
+            level = get_level(current_user['xp'])
+            if current_user['health'] > 0:
+                rpg_adventure(level, current_user)
+                save_user_data(users)
+                last_adventure_time = current_time
+            else:
+                print("You don't have enough health for an adventure.")
+            # else:
+            #     print("Adventure is on cooldown. Please wait a few seconds.")
+        elif choice == '3':
+            if current_user['health'] == current_user['total_health']:
+                print("You already have full health. You cannot use the Life Potion.")
+            elif 'Life Potion' in current_user['inventory'] and current_user['inventory']['Life Potion'] > 0:
+                current_user['health'] = current_user['total_health']
+                current_user['inventory']['Life Potion'] -= 1
+                print("You have been healed to full health.")
+                save_user_data(users)
+            else:
+                print("You don't have any Life Potions.")
+        elif choice == '4':
+            view_inventory(current_user)
+        elif choice == '5':
+            view_profile(current_user)
+        elif choice == '6':
+            store(current_user)
+            save_user_data(users)
+        elif choice == '7':
+            # if current_time - last_chop_time >= 20:
+            rpg_chop(current_user)
+            save_user_data(users)
+            last_chop_time = current_time
+            # else:
+            #     print("Chop Wood is on cooldown. Please wait a few seconds.")
+        elif choice == '8':
+            # if current_time - last_reward_time >= 20:
+            reward(current_user)
+            save_user_data(users)
+            last_reward_time = current_time
+            # else:
+            #     print("Reward is on cooldown. Please wait a few seconds.")
+        elif choice == '9':
+            delete_user(user)
+            break
+        elif choice == '10':
+            print("Exiting the game.")
+            save_user_data(users)
+            break
+        else:
+            print("Invalid choice. Please enter a valid option.")
+
+
+this is inventory.py
+
+
+from utils import item_emojis
+
+def view_inventory(user):
+    if not user['inventory']:
+        print("Your inventory is empty.")
+    else:
+        print("\n")
+        print("--------------------------------------------------")
+        print("Inventory:")
+        for item, qty in user['inventory'].items():
+            print(f"{item_emojis.get(item, '')} {item}: {qty}")
+        print("--------------------------------------------------")
+        print("\n")
+
+
+this is profile .py
+
+
+from utils import get_level
+
+def view_profile(user):
+    print("\n")
+    print("--------------------------------------------------")
+    print(f"👤 {user['username']}")
+    print(f"⭐ Level: {get_level(user['xp'])}")
+    print(f"⚔️ Attack: {user['attack']} | 🛡️ Defense: {user['defense']}")
+    print(f"❤️ {user['health']}/{user['total_health']} | 💰 Coins: {user['coin']} | 📈 XP: {user['xp']}")
+    print("--------------------------------------------------")
+    print("\n")
+
+
+this is store.py
+
+
+from utils import item_emojis
+
+def store(user):
+    print("\n")
+    print("--------------------------------------------------")
+    items = {"1": ("Basic Armour", 200), "2": ("Sword", 300), "3": ("Golden Apples", 5000), "4": ("Life Potion", 20)}
+
+    print("Store:")
+    print(f"💰 Coins: {user['coin']}")
+    for number, (item, cost) in items.items():
+        print(f"{number}. {item_emojis[item]} {item}: {cost} coins")
+
+    print("--------------------------------------------------")
+    choice = input("Enter item number to buy: ").strip()
+    if choice not in items:
+        print("Invalid choice.")
+        return
+
+    item, cost = items[choice]
+    if item == "Life Potion":
+        quantity = int(input("Enter quantity of Life Potions to buy: ").strip())
+        total_cost = cost * quantity
+        if user['coin'] < total_cost:
+            print("Insufficient coins.")
+            return
+        user['coin'] -= total_cost
+        user['inventory'][item] = user['inventory'].get(item, 0) + quantity
+        print(f"Bought {quantity} Life Potions.")
+        
+    else:
+        quantity = 1
+        total_cost = cost * quantity
+        if user['coin'] < total_cost:
+            print("Insufficient coins.")
+            return
+        user['coin'] -= total_cost
+        user['inventory'][item] = user['inventory'].get(item, 0) + quantity
+        print(f"Bought {item}.")
+
+
+
+this is user.py
+
+
+
+import json
+
+user_data_file = 'user_data.json'
+
+def load_user_data():
+    try:
+        with open(user_data_file, 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return {}
+    users = load_user_data()
+    
+
+def save_user_data(data):
+    with open(user_data_file, 'w') as file:
+        json.dump(data, file, indent=4)
+
+def register():
+    users = load_user_data()
+    username = input("Enter a new username: ").strip()
+    if not username or username in users:
+        print("Invalid or existing username. Try again.")
+        return None
+    password = input("Enter a new password: ").strip()
+    users[username] = {
+        'password': password,
+        'coin': 0,
+        'xp': 0,
+        'level': 1,
+        'health': 100,
+        'total_health': 100,
+        'attack': 10,
+        'defense': 5,
+        'inventory': {}
+    }
+    save_user_data(users)
+    print("Registration successful!")
+    return username
+
+def login():
+    users = load_user_data()
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+    if username in users and users[username]['password'] == password:
+        print(f"Login successful! Welcome, {username}!")
+        return username
+    else:
+        print("Invalid username or password.")
+        return None
+
+def delete_user(username):
+    users = load_user_data()
+    if username in users:
+        confirm = input(f"Are you sure you want to delete the user {username}? (yes/no): ")
+        if confirm.lower() == 'yes':
+            del users[username]
+            save_user_data(users)
+            print(f"User {username} has been deleted.")
+        else:
+            print("User deletion cancelled.")
+    else:
+        print("User not found.")
+
+
+
+this is utill.py
+
+
+
+
+def get_level(xp):
+    return min(xp // 200 + 1, 10)
+
+item_emojis = {
+    "Rusty Dagger": "🗡️",
+    "Torn Pouch": "🏹",
+    "Small Gem": "💎",
+    "Cracked Fang": "⚔️",
+    "Wolf Fang": "🦴",
+    "Tattered Hide": "🧥",
+    "Cracked Stone": "🪨",
+    "Magic Core": "🔮",
+    "Heavy Rock": "🏗️",
+    "Slime Essence": "🧪",
+    "Sticky Gel": "🔵",
+    "Poison Fang": "🕷️",
+    "Spider Silk": "🕸️",
+    "Webbed Arrow": "🏹",
+    "Lizard Scale": "🦎",
+    "Venom Blade": "🗡️",
+    "Fire Gland": "🔥",
+    "Deer Antler": "🏹",
+    "Soft Fur": "🧥",
+    "Mystic Leaf": "🍁",
+    "Frog Leg": "🐸",
+    "Lucky Charm": "🍀",
+    "Toxic Slime": "🧪",
+    "Explosive Powder": "💣",
+    "Glowing Eye": "🟩",
+    "Ashes": "🔥",
+    "Basic Armour": "🛡️",
+    "Sword": "⚔️",
+    "Golden Apples": "🍏",
+    "Life Potion": "🧪",
+    "Dragon Scale": "🐉",
+    "Titan's Heart": "❤️",
+    "Hydra Venom": "🐍",
+    "Ancient Relic": "🏺",
+    "Shadow Orb": "⚫",
+    "Demon Horn": "👹",
+    "Phoenix Feather": "🪶",
+    "Eldritch Tome": "📜",
+    "Warrior's Medal": "🎖️",
+    "Hunt": "⚔️",
+    "Adventure": "🌄",
+    "View Inventory": "🎒",
+    "View Profile": "🧑",
+    "Store": "🏪",
+    "Heal using Life Potion": "💖",
+    "Delete User": "❌",
+    "Exit": "🚪",
+    "Chop_woods": "🪓",
+    "Reward": "🏆",
+    "Sharp Tooth": "🦷",
+    "Bear Claw": "🐻",
+    "Fur Pelt": "🦊",
+    "Slime Gel": "🧪",
+    "Sticky Residue": "🟡",
+    "Glowing Core": "🔆",
+    "Spider Leg": "🕷️",
+    "Silk Thread": "🧵",
+    "Venom Sac": "🕸️",
+    "Reptile Scale": "🦎",
+    "Sharp Claw": "🦅",
+    "Venom Gland": "🧪",
+    "Hoof": "🐴",
+    "Slippery Skin": "🦎",
+    "Croak Sac": "🐸",
+    "Creeper Dust": "🌫️",
+    "Explosive Core": "💥",
+    "Fragmented Shell": "🐚",
+}
