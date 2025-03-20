@@ -1,10 +1,10 @@
 {
     "a": {
         "password": "a",
-        "coin": 3831,
-        "xp": 3432,
+        "coin": 3854,
+        "xp": 3487,
         "level": 10,
-        "health": 235,
+        "health": 224,
         "total_health": 235,
         "attack": 10,
         "defense": 5,
@@ -34,7 +34,7 @@
             "Soft Fur": 2,
             "Frog Leg": 3,
             "Croak Sac": 1,
-            "Explosive Core": 9,
+            "Explosive Core": 10,
             "Creeper Dust": 13,
             "Fragmented Shell": 9
         },
