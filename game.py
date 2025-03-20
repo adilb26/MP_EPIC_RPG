@@ -46,7 +46,7 @@ def start_game():
         current_time = time.time()
 
         if choice == '1':
-            if current_time - last_hunt_time < 60:
+            if current_time - last_hunt_time < 10:
                 print("You need to wait before hunting again.")
                 continue
             level = get_level(current_user['xp'])
@@ -58,7 +58,7 @@ def start_game():
                 save_user_data(users)
                 last_hunt_time = current_time
         elif choice == '2':
-            if current_time - last_adventure_time < 120:
+            if current_time - last_adventure_time < 30:
                 print("You need to wait before going on an adventure again.")
                 continue
             level = get_level(current_user['xp'])
@@ -86,14 +86,14 @@ def start_game():
             store(current_user)
             save_user_data(users)
         elif choice == '7':
-            if current_time - last_chop_time < 30:
+            if current_time - last_chop_time < 20:
                 print("You need to wait before chopping wood again.")
                 continue
             rpg_chop(current_user)
             save_user_data(users)
             last_chop_time = current_time
         elif choice == '8':
-            if current_time - last_reward_time < 86400:
+            if current_time - last_reward_time < 20:
                 print("You need to wait before claiming the reward again.")
                 continue
             reward(current_user)
@@ -109,12 +109,11 @@ def start_game():
         else:
             print("Invalid choice. Please enter a valid option.")
 
-        # Check for level-up after each action
         new_level = get_level(current_user['xp'])
-        if new_level > current_user['level']:  # Level-up detected
+        if new_level > current_user['level']:
             increase = (new_level - current_user['level']) * 15  # 15 per level up
             current_user['total_health'] += increase
-            current_user['health'] += increase  # Heal the user too
-            current_user['level'] = new_level  # Update stored level
+            current_user['health'] += increase
+            current_user['level'] = new_level
             print(f"🎉 You leveled up to Level {new_level}! Your total health increased by {increase}.")
             save_user_data(users)

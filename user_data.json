@@ -1,10 +1,10 @@
 {
     "a": {
         "password": "a",
-        "coin": 3803,
-        "xp": 3378,
+        "coin": 3831,
+        "xp": 3432,
         "level": 10,
-        "health": 8,
+        "health": 235,
         "total_health": 235,
         "attack": 10,
         "defense": 5,
@@ -15,7 +15,7 @@
             "Wolf Fang": 5,
             "Tattered Hide": 7,
             "Cracked Fang": 7,
-            "Life Potion": 69,
+            "Life Potion": 68,
             "Fur Pelt": 4,
             "Bear Claw": 3,
             "Sharp Tooth": 5,
@@ -36,7 +36,7 @@
             "Croak Sac": 1,
             "Explosive Core": 9,
             "Creeper Dust": 13,
-            "Fragmented Shell": 8
+            "Fragmented Shell": 9
         },
         "username": "a"
     }
