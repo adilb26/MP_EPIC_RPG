@@ -3,7 +3,6 @@ from user import save_user_data
 from utils import item_emojis
 
 def get_level(xp):
-    # Define the XP thresholds for each level
     thresholds = [0, 100, 250, 500, 1000, 2000, 3500, 5000, 7500, 10000]
     level = 1
     for i, threshold in enumerate(thresholds):
@@ -16,7 +15,7 @@ def check_level_up(user):
     if new_level > user['level']:
         increase = (new_level - user['level']) * 15
         user['total_health'] += increase
-        user['health'] += increase  # Heal after leveling up
+        user['health'] += increase
         user['level'] = new_level
         print(f"🎉 Level Up! You are now Level {new_level}. Total health increased by {increase}.")
 
@@ -34,11 +33,7 @@ def rpg_hunt(level, user):
         {"creature": "Creeper", "coins": (23, 28), "xp": (50, 55), "hp_loss": (10, 11), "items": ["Creeper Dust", "Explosive Core", "Fragmented Shell"]},
     ]
     
-    if level < 1 or level > len(events):
-        print("Invalid level. Please choose a valid level.")
-        return
-    
-    event = events[level - 1]
+    event = events[(level - 1) % len(events)]
     coins = random.randint(*event["coins"])
     xp_gain = random.randint(*event["xp"])
     hp_loss = random.randint(*event["hp_loss"])
